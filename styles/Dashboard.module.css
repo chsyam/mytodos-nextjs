@@ -1,0 +1,59 @@
+@import url(https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
+
+.dashboard {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Poppins';
+}
+
+.todoListContainer {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.todoListContainer table {
+	width: 80%;
+	border-collapse: collapse;
+}
+
+.todoListContainer table tbody tr {
+	border-bottom: 1px solid gray;
+}
+
+.todoListContainer table tbody tr td {
+	padding: 20px 10px;
+}
+
+.addTask {
+	background-color: rgb(34, 0, 255);
+	cursor: pointer;
+	padding: 6px 8px;
+	border-radius: 50%;
+	line-height: 40px;
+	font-size: 50px;
+	position: absolute;
+	bottom: 40px;
+	right: 40px;
+}
+
+.tableRow td:nth-child(3) {
+	text-align: center;
+}
+
+.tableRow td:nth-child(1) {
+	width: 50px;
+}
+
+@media (max-width: 600px) {
+	.todoListContainer table {
+		width: 100%;
+		font-size: 12px;
+	}
+
+	.tableRow td:nth-child(1) {
+		width: min-content;
+	}
+}
