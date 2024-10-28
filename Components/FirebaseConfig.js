@@ -9,7 +9,7 @@ const firebaseConfig = {
     messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
     appId: process.env.NEXT_PUBLIC_APP_ID,
 };
-console.log("firebaseConfig", firebaseConfig)
+// console.log("firebaseConfig", firebaseConfig)
 
 const app = initializeApp(firebaseConfig, 'mytodos');
 export { app }
