@@ -44,9 +44,6 @@ export default function Dashboard(props) {
                             todosList.map((item, index) => {
                                 return (
                                     <tr className={styles.tableRow} key={index}>
-                                        <td>
-                                            <input className={styles.checkbox} type="checkbox" />
-                                        </td>
                                         <td className={styles.todoTitle}>{item.title}</td>
                                         <td className={styles.status}>
                                             {getDueDate(item.dueDate)}
@@ -72,14 +69,14 @@ export async function getServerSideProps(context) {
     try {
         var idToken = "";
         const auth = getAuth(app);
-        await signInWithEmailAndPassword(auth, process.env.USER_EMAIL, process.env.USER_PASSWORD).then(async (userCredential) => {
+        await signInWithEmailAndPassword(auth, process.env.NEXT_PUBLIC_USER_EMAIL, process.env.NEXT_PUBLIC_USER_PASSWORD).then(async (userCredential) => {
             idToken = await getIdToken(auth.currentUser);
         }).catch((error) => {
             console.log(error);
         });
 
         const response = await fetch(
-            `${process.env.DATABASE_URL}/mytodos.json?auth=${idToken}`, {
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/mytodos.json?auth=${idToken}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

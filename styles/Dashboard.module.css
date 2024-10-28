@@ -39,21 +39,13 @@
 	right: 40px;
 }
 
-.tableRow td:nth-child(3) {
+.tableRow td:nth-child(2) {
 	text-align: center;
-}
-
-.tableRow td:nth-child(1) {
-	width: 50px;
 }
 
 @media (max-width: 600px) {
 	.todoListContainer table {
 		width: 100%;
 		font-size: 12px;
-	}
-
-	.tableRow td:nth-child(1) {
-		width: min-content;
 	}
 }

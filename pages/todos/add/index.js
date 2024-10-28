@@ -27,7 +27,6 @@ export default function AddTodo({ userEmail, userPassword, dbLink }) {
 
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
-        console.log('toasted')
         isLoading &&
             toast.info('Adding task to your list')
     }, [isLoading])
@@ -47,12 +46,9 @@ export default function AddTodo({ userEmail, userPassword, dbLink }) {
         console.log(todoData);
         try {
             var idToken = "";
-            console.log("Starting point")
-            console.log(app)
             const auth = getAuth(app);
-            console.log("auth =>", auth);
             await signInWithEmailAndPassword(auth, userEmail, userPassword).then(async (userCredential) => {
-                console.log("userCredential =>", userCredential);
+                console.log("userCredential", userCredential);
                 idToken = await getIdToken(auth.currentUser);
             }).catch((error) => {
                 console.log("error =>", error);
@@ -150,9 +146,9 @@ export default function AddTodo({ userEmail, userPassword, dbLink }) {
 }
 
 export async function getServerSideProps(context) {
-    const userEmail = process.env.USER_EMAIL;
-    const userPassword = process.env.USER_PASSWORD;
-    const dbLink = process.env.DATABASE_URL;
+    const userEmail = process.env.NEXT_PUBLIC_USER_EMAIL;
+    const userPassword = process.env.NEXT_PUBLIC_USER_PASSWORD;
+    const dbLink = process.env.NEXT_PUBLIC_DATABASE_URL;
 
     return {
         props: {
