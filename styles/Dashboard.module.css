@@ -74,40 +74,40 @@
 	margin: 20px 0;
 	font-size: 18px;
 	color: rgb(103, 102, 102);
+}
 
-	span {
-		color: black;
-		margin: 20px 0;
-		font-size: 26px;
-		font-weight: 600;
-		margin: 0 10px;
-	}
+.inDetailContainer .title span {
+	color: black;
+	margin: 20px 0;
+	font-size: 26px;
+	font-weight: 600;
+	margin: 0 10px;
 }
 
 .inDetailContainer .description {
 	margin: 20px 0;
 	font-size: 18px;
 	color: rgb(103, 102, 102);
+}
 
-	span {
-		color: #272727;
-		font-size: 20px;
-		margin: 0 10px;
-		font-weight: normal;
-	}
+.inDetailContainer .description span {
+	color: #272727;
+	font-size: 20px;
+	margin: 0 10px;
+	font-weight: normal;
 }
 
 .inDetailContainer .dueDate {
 	margin: 20px 0;
 	font-size: 18px;
 	color: rgb(103, 102, 102);
+}
 
-	span {
-		color: #000;
-		font-size: 20px;
-		margin: 0 10px;
-		font-weight: 600;
-	}
+.inDetailContainer .dueDate span {
+	color: #000;
+	font-size: 20px;
+	margin: 0 10px;
+	font-weight: 600;
 }
 
 @media (max-width: 600px) {
