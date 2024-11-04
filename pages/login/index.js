@@ -1,6 +1,6 @@
 import { ListTodo } from 'lucide-react';
 import Link from 'next/link';
-import styles from '@/styles/Auth.module.css';
+import styles from './../../styles/Auth.module.css';
 
 export default function Login() {
     return (

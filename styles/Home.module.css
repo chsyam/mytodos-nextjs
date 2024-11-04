@@ -1,6 +1,7 @@
 .container {
     min-height: 100vh;
     background: linear-gradient(135deg, #f5f7ff 0%, #f8f0ff 50%, #fff0f5 100%);
+    font-family: 'Poppins';
 }
 
 .main {
@@ -16,13 +17,13 @@
 
 .hero h1 {
     font-size: 48px;
-    font-weight: 800;
+    font-weight: 600;
     color: #1a1a1a;
     margin-bottom: 24px;
 }
 
 .hero p {
-    font-size: 20px;
+    font-size: 18px;
     color: #666;
     max-width: 600px;
     margin: 0 auto 32px;

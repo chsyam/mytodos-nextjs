@@ -1,0 +1,179 @@
+.container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7ff 0%, #f8f0ff 50%, #fff0f5 100%);
+    padding: 20px;
+    font-family: 'Poppins';
+}
+
+.todoList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+}
+
+.todoList table {
+    flex-grow: 1;
+    border-collapse: collapse;
+}
+
+.todoItem {
+    background-color: #FFF;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #a6a6a6;
+    font-family: 'Poppins';
+    user-select: none;
+
+}
+
+.checkBox {
+    text-align: center;
+    width: 60px;
+}
+
+.checkBox button {
+    padding: 5px 7px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.checkBox button:hover {
+    border: 2px solid green;
+    color: green;
+}
+
+.todoActions {
+    text-align: center;
+    width: 8%;
+}
+
+.todoActions button {
+    text-align: center;
+    margin: 0 5px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.todoActions .deleteAction {
+    border: 2px solid red;
+    color: red;
+    background-color: #fef2f2;
+}
+
+.todoActions .editAction {
+    border: 2px solid #37627a;
+    color: #37627a;
+    background-color: #ececec;
+}
+
+.todoContent {
+    padding: 20px 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.todoTitle {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.todoDescription {
+    font-size: 1rem;
+    color: #424242;
+}
+
+.todoHeaders {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Poppins';
+    align-items: center;
+    margin: 30px 0;
+}
+
+.todoHeaders .title {
+    font-size: 1.75rem;
+    font-weight: 500;
+}
+
+.newTodo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background-color: #4338ca;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    color: white;
+    border: 1px solid #4338ca;
+    font-size: 18px;
+    cursor: pointer;
+    font-family: 'Poppins';
+}
+
+.menuOptions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.deleteConfirmation {
+    background-color: #FFF;
+    border-radius: 5px;
+    position: fixed;
+    top: 30%;
+    right: 30%;
+    left: 30%;
+    bottom: 30%;
+    box-shadow: 3px 4px 6px rgba(7, 7, 7, 0.5);
+    border: 2px solid red;
+    padding: 20px;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    font-weight: 500;
+    font-size: 1.5rem;
+    font-family: 'Poppins';
+}
+
+.deleteConfirmation button {
+    padding: 8px 15px;
+    margin: 0 10px;
+    font-family: 'Poppins';
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.deleteConfirmation .deleteButton {
+    border: 2px solid red;
+    color: red
+}
+
+.deleteConfirmation .cancelButton {
+    border: 2px solid green;
+    color: green
+}
+
+.deleteConfirmation .deleteButton:hover {
+    color: #FFF;
+    background-color: red;
+    box-shadow: 3px 4px 6px rgba(255, 0, 0, 0.5);
+    transition: all ease-in 0.2s;
+}
+
+.deleteConfirmation .cancelButton:hover {
+    color: #FFF;
+    background-color: green;
+    box-shadow: 3px 4px 6px green;
+    transition: all ease-in 0.2s;
+}

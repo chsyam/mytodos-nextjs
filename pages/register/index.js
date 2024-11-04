@@ -12,15 +12,17 @@ export default function Register() {
                 <h2>Create your account</h2>
 
                 <form className={styles.form}>
-                    <div className={styles.nameFields}>
-                        <div className={styles.formGroup}>
-                            <label>First name</label>
-                            <input type="text" placeholder="John" />
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label>Last name</label>
-                            <input type="text" placeholder="Doe" />
-                        </div>
+                    <div className={styles.formGroup}>
+                        <label>First name</label>
+                        <input type="text" placeholder="John" />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Last name</label>
+                        <input type="text" placeholder="Doe" />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Username</label>
+                        <input type="text" placeholder="username" />
                     </div>
 
                     <div className={styles.formGroup}>
@@ -32,6 +34,10 @@ export default function Register() {
                         <label>Password</label>
                         <input type="password" placeholder="Create a strong password" />
                     </div>
+                    <div className={styles.formGroup}>
+                        <label>Password</label>
+                        <input type="password" placeholder="Retype password to confirm" />
+                    </div>
 
                     <button type="submit" className={styles.submitButton}>
                         Create account
@@ -42,6 +48,9 @@ export default function Register() {
                     Already have an account?{' '}
                     <Link href="/login">Sign in</Link>
                 </p>
+                <Link href="/" className={styles.backLink}>
+                    Back to home
+                </Link>
             </div>
         </div>
     )
