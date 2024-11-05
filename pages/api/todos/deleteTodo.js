@@ -11,7 +11,7 @@ export default async function handler(req, res) {
             const userEmail = process.env.NEXT_PUBLIC_USER_EMAIL;
             const userPassword = process.env.NEXT_PUBLIC_USER_PASSWORD;
             await signInWithEmailAndPassword(auth, userEmail, userPassword).then(async (userCredential) => {
-                console.log("userCredential", userCredential);
+                // console.log("userCredential", userCredential);
                 idToken = await getIdToken(auth.currentUser);
             }).catch((error) => {
                 console.log("error =>", error);

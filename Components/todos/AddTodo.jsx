@@ -1,5 +1,5 @@
 import DatePicker from "react-datepicker";
-import styles from "./../../../styles/CreateTodo.module.css"
+import styles from "./../../styles/CreateTodo.module.css"
 import { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { v4 as uuidv4 } from 'uuid';
@@ -10,22 +10,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import Spinner from "@/Components/Spinner";
 import { useRouter } from "next/router";
 
-export default function AddTodo({ todoId, todosList }) {
+
+export default function AddTodo({ userEmail, userPassword, dbLink, setAddingNewTodo, addingNewTodo }) {
     const router = useRouter();
-    console.log("todosList", todosList);
-    if (todosList.length === 0) {
-        router.push('/todos');
-    }
 
     const [todoData, setTodoData] = useState({
-        userId: todosList?.userId,
-        todoId: todosList?.todoId,
-        title: todosList?.title,
-        description: todosList?.description,
-        dueDate: new Date(todosList?.dueDate),
-        createdAt: todosList?.createdAt,
-        status: todosList?.status
+        userId: '1',
+        todoId: uuidv4(),
+        title: '',
+        description: '',
+        dueDate: new Date(),
+        createdAt: new Date(),
+        status: 'pending'
     });
+
 
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
@@ -47,23 +45,30 @@ export default function AddTodo({ todoId, todosList }) {
         todoData['status'] = todoData['dueDate'] < new Date() ? 'Overdue' : 'Pending';
         console.log(todoData);
         try {
-            const response = await fetch(`/api/todos/updateTodo?todoObjId=${todoId}`, {
-                method: 'PATCH',
+            var idToken = "";
+            const auth = getAuth(app);
+            await signInWithEmailAndPassword(auth, userEmail, userPassword).then(async (userCredential) => {
+                // console.log("userCredential", userCredential);
+                idToken = await getIdToken(auth.currentUser);
+            }).catch((error) => {
+                console.log("error =>", error);
+            });
+
+            const response = await fetch(
+                `${dbLink}/mytodos.json?auth=${idToken}`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(todoData)
+                body: JSON.stringify(todoData),
             });
-            console.log("response", response)
+            console.log("response", response);
+
             if (response.ok) {
-                const result = await response.json();
-                console.log(result.message);
-                router.push("/todos");
-            } else {
-                console.error('Failed to delete the item.');
+                router.reload();
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.log(error);
         }
         setIsLoading(false);
     }
@@ -77,7 +82,7 @@ export default function AddTodo({ todoId, todosList }) {
                     </label><br />
                     <textarea
                         id="title"
-                        rows={2}
+                        rows={1}
                         placeholder="enter title"
                         name="title"
                         value={todoData.title}
@@ -89,7 +94,7 @@ export default function AddTodo({ todoId, todosList }) {
                     <label htmlFor="description">Description (optional)</label><br />
                     <textarea
                         id="description"
-                        rows={5}
+                        rows={2}
                         placeholder="enter description"
                         name="description"
                         value={todoData.description}
@@ -113,16 +118,28 @@ export default function AddTodo({ todoId, todosList }) {
                 </div>
                 <div className={styles.buttonGroup}>
                     <button
+                        onClick={() => {
+                            setTodoData({
+                                userId: '1',
+                                todoId: uuidv4(),
+                                title: '',
+                                description: '',
+                                dueDate: new Date(),
+                                createdAt: new Date(),
+                                status: 'Pending'
+                            })
+                            setAddingNewTodo(!addingNewTodo);
+                        }}
                         style={{ color: 'red', border: '1px solid red' }}
                         type="reset"
                         className={styles.cancelButton}
-                    >Reset</button>
+                    >Cancel</button>
                     <button
-                        style={{ backgroundColor: 'green', color: 'white', border: '1px solid green' }}
+                        style={{ backgroundColor: 'green', color: 'white', border: '1px solid green', opacity: isLoading ? '0.5' : '1', pointerEvents: isLoading ? 'none' : 'auto' }}
                         disabled={isLoading}
                         type="submit"
                         className={styles.submitButton}
-                    >{isLoading ? <Spinner /> : "Update Todo"}</button>
+                    >{isLoading ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}><Spinner />{'Add Todo'}</div> : "Add Todo"}</button>
                 </div>
             </form>
             <ToastContainer
@@ -138,47 +155,4 @@ export default function AddTodo({ todoId, todosList }) {
             />
         </div>
     );
-}
-
-export async function getServerSideProps(context) {
-    const { req, res } = context
-    const { todoId } = context.query;
-    console.log("todoId", todoId);
-    let todosList = [];
-    try {
-        var idToken = "";
-        const auth = getAuth(app);
-        await signInWithEmailAndPassword(auth, process.env.NEXT_PUBLIC_USER_EMAIL, process.env.NEXT_PUBLIC_USER_PASSWORD).then(async (userCredential) => {
-            idToken = await getIdToken(auth.currentUser);
-        }).catch((error) => {
-            console.log(error);
-        });
-
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_DATABASE_URL}/mytodos/${todoId}.json?auth=${idToken}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        todosList = await response.json();
-        if (!response.ok || !todosList) {
-            todosList = [];
-        }
-
-        return {
-            props: {
-                todoId: todoId,
-                todosList: todosList,
-            },
-        }
-    } catch (error) {
-        console.log(error);
-        return {
-            props: {
-                todoId: '',
-                todoList: [],
-            },
-        }
-    }
 }

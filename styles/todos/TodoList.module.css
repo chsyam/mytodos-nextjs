@@ -5,6 +5,11 @@
     font-family: 'Poppins';
 }
 
+.todoContainer {
+    width: 96%;
+    margin: auto;
+}
+
 .todoList {
     display: flex;
     justify-content: center;
@@ -13,24 +18,27 @@
     margin: auto;
 }
 
+.actionButton {
+    border: 2px solid black;
+}
+
 .todoList table {
     flex-grow: 1;
     border-collapse: collapse;
+    box-shadow: 0 1px 4px #8800ff;
 }
 
 .todoItem {
     background-color: #FFF;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #a6a6a6;
+    border-top: 1px solid #8800ff;
     font-family: 'Poppins';
     user-select: none;
-
 }
 
 .checkBox {
     text-align: center;
     width: 60px;
+    padding-left: 20px;
 }
 
 .checkBox button {
@@ -45,8 +53,11 @@
 }
 
 .todoActions {
-    text-align: center;
-    width: 8%;
+    padding-right: 30px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    gap: 10px;
 }
 
 .todoActions button {
@@ -71,8 +82,7 @@
 }
 
 .todoContent {
-    padding: 20px 20px;
-
+    padding: 30px 20px;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -146,7 +156,31 @@
     font-family: 'Poppins';
 }
 
-.deleteConfirmation button {
+.AddConfirmation,
+.updateConfirmation {
+    background-color: #FFF;
+    border-radius: 5px;
+    position: fixed;
+    top: 20%;
+    right: 20%;
+    left: 20%;
+    bottom: 10%;
+    box-shadow: 3px 4px 6px rgba(7, 7, 7, 0.5);
+    border: 2px solid green;
+    padding: 20px;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    font-weight: 500;
+    font-size: 1.5rem;
+    font-family: 'Poppins';
+}
+
+.deleteConfirmation button,
+.AddConfirmation button {
     padding: 8px 15px;
     margin: 0 10px;
     font-family: 'Poppins';
@@ -154,24 +188,28 @@
     cursor: pointer;
 }
 
-.deleteConfirmation .deleteButton {
+.deleteConfirmation .deleteButton,
+.AddConfirmation .cancelAdd {
     border: 2px solid red;
     color: red
 }
 
-.deleteConfirmation .cancelButton {
+.deleteConfirmation .cancelButton,
+.AddConfirmation .addTodo {
     border: 2px solid green;
     color: green
 }
 
-.deleteConfirmation .deleteButton:hover {
+.deleteConfirmation .deleteButton:hover,
+.AddConfirmation .cancelAdd:hover {
     color: #FFF;
     background-color: red;
     box-shadow: 3px 4px 6px rgba(255, 0, 0, 0.5);
     transition: all ease-in 0.2s;
 }
 
-.deleteConfirmation .cancelButton:hover {
+.deleteConfirmation .cancelButton:hover,
+.AddConfirmation .addTodo:hover {
     color: #FFF;
     background-color: green;
     box-shadow: 3px 4px 6px green;

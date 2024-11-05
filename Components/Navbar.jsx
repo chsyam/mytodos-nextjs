@@ -23,10 +23,6 @@ export default function Navbar() {
                     <Link href="/register" className={styles.registerLink}>
                         Get Started
                     </Link>
-                    <button className={styles.newTodo}>
-                        <Plus className={styles.plusIcon} />
-                        New Todo
-                    </button>
                     <div className={styles.profilePart}>
                         <button
                             onClick={() => setIsOpen(!isOpen)}

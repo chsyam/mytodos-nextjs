@@ -3,7 +3,6 @@
 .todoForm {
   font-family: "Poppins";
   width: 80%;
-  margin: 0 10%;
 }
 
 .formElement {
@@ -24,7 +23,7 @@
   font-size: 16px;
   padding: 10px 10px;
   outline: none;
-  border: 2px solid #000;
+  border: 2px solid #919191;
   border-radius: 5px;
   font-size: 18px;
 }

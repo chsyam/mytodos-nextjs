@@ -1,34 +1,96 @@
 import Navbar from "@/Components/Navbar";
 import TodoList from "@/Components/todos/TodoList";
 import TodoStats from "@/Components/TodoStats";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./../../styles/todos/TodoList.module.css"
 import { Filter, Plus, Trash2, X } from "lucide-react";
+import AddTodo from "@/Components/todos/AddTodo";
+import UpdateTodo from "@/Components/todos/UpdateTodo";
+import { getAuth, getIdToken, signInWithEmailAndPassword } from "firebase/auth";
+import { app } from "@/Components/FirebaseConfig";
+import { useRouter } from 'next/router';
 
-export default function Dashboard() {
-    const [todos, setTodos] = useState([
-        { id: 1, title: 'Complete project documentation', completed: false, dueDate: '2024-03-20' },
-        { id: 2, title: 'Review pull requests', completed: true, dueDate: '2024-03-18' },
-        { id: 3, title: 'Update dependencies', completed: false, dueDate: '2024-03-15' },
-        { id: 4, title: 'Complete project documentation', completed: false, dueDate: '2024-03-20' },
-        { id: 5, title: 'Review pull requests', completed: true, dueDate: '2024-03-18' },
-        { id: 6, title: 'Update dependencies', completed: false, dueDate: '2024-03-15' },
-        { id: 7, title: 'Complete project documentation', completed: false, dueDate: '2024-03-20' },
-        { id: 8, title: 'Review pull requests', completed: true, dueDate: '2024-03-18' },
-        { id: 9, title: 'Update dependencies', completed: false, dueDate: '2024-03-15' },
-    ]);
+export default function Dashboard({ userEmail, userPassword, dbLink, todosList }) {
+    const [todos, setTodos] = useState([]);
+    const router = useRouter();
 
-    const { deletedTodos, setDeletedTodos } = useState([]);
+    useEffect(() => {
+        let tempKeys = Object.keys(todosList);
+        let tempValues = Object.values(todosList);
+        let tempTodos = [];
+        for (let i = 0; i < tempKeys.length; i++) {
+            tempValues[i]['todoObjId'] = tempKeys[i];
+            tempTodos.push(tempValues[i])
+        }
+        console.log("tempTodos", tempTodos)
+        setTodos(tempTodos);
+    }, [todosList])
 
-    const handleComplete = () => { }
-    const handleDelete = (todoId) => {
-        setTodos(todos.filter(todo => todo.id !== todoId))
-        setIsDeleting({
-            status: false,
-            id: null
-        })
+    const [addingNewTodo, setAddingNewTodo] = useState(false);
+    const [isCompleting, setIsCompleting] = useState({
+        status: false,
+        todoObjId: null
+    });
+    const [isUpdating, setIsUpdating] = useState({
+        status: false,
+        todoItem: null
+    });
+
+    async function completeTodo(todoObjId, todo) {
+        try {
+            const response = await fetch(`/api/todos/updateTodo?todoObjId=${todoObjId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(todo)
+            });
+            console.log("response", response)
+            if (response.ok) {
+                const result = await response.json();
+                console.log(result.message);
+                router.reload();
+            } else {
+                console.error('Failed to delete the item.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
-    const handleEdit = () => { }
+
+    const handleComplete = (todoObjId, todo) => {
+        setIsCompleting(!isCompleting);
+        todo.status = "Completed";
+        // todo.dueDate = new Date();
+        completeTodo(todoObjId, todo);
+        setIsCompleting(!isCompleting);
+    }
+
+    const handleDelete = async (todoId) => {
+        try {
+            const response = await fetch(`/api/todos/deleteTodo?todoObjId=${todoId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log("response", response)
+            if (response.ok) {
+                const result = await response.json();
+                console.log(result.message);
+                setIsDeleting({
+                    status: false,
+                    id: null
+                })
+                router.reload();
+            } else {
+                console.error('Failed to delete the item.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
     const handleNewTodo = () => { }
     const [isDeleting, setIsDeleting] = useState({
         status: false,
@@ -38,14 +100,16 @@ export default function Dashboard() {
     return (
         <div className={styles.container}>
             <Navbar />
-            <div style={{ paddingTop: '80px', opacity: isDeleting.status ? '0.1' : '1', pointerEvents: isDeleting.status ? 'none' : 'auto' }}>
-                <TodoStats />
+            <div className={styles.todoContainer} style={{ paddingTop: '80px', opacity: (isDeleting.status || addingNewTodo || isUpdating.status) ? '0.1' : '1', pointerEvents: (isDeleting.status || addingNewTodo || isUpdating.status) ? 'none' : 'auto' }}>
+                <TodoStats todosList={todos} />
                 <div>
                     <div className={styles.todoHeaders}>
                         <div className={styles.title}>Todos List</div>
                         <div className={styles.menuOptions}>
                             <Filter />
-                            <button className={styles.newTodo}>
+                            <button
+                                onClick={() => setAddingNewTodo(!addingNewTodo)}
+                                className={styles.newTodo}>
                                 <Plus className={styles.plusIcon} />
                                 New Todo
                             </button>
@@ -55,10 +119,12 @@ export default function Dashboard() {
                     <TodoList
                         todos={todos}
                         onComplete={handleComplete}
-                        onDelete={handleDelete}
-                        onEdit={handleEdit}
                         isDeleting={isDeleting}
                         setIsDeleting={setIsDeleting}
+                        isUpdating={isUpdating}
+                        setIsUpdating={setIsUpdating}
+                        isCompleting={isCompleting}
+                        setIsCompleting={setIsCompleting}
                     />
                 </div>
             </div>
@@ -86,6 +152,67 @@ export default function Dashboard() {
                     </div>
                 )
             }
+            {
+                addingNewTodo && (
+                    <div className={styles.AddConfirmation}>
+                        <AddTodo userEmail={userEmail} userPassword={userPassword} dbLink={dbLink} setAddingNewTodo={setAddingNewTodo} addingNewTodo={addingNewTodo} />
+                    </div>
+                )
+            }
+            {
+                isUpdating.status && (
+                    <div className={styles.updateConfirmation}>
+                        <UpdateTodo setIsUpdating={setIsUpdating} todoItem={isUpdating.todoItem} />
+                    </div>
+                )
+            }
         </div>
     );
+}
+
+export async function getServerSideProps(context) {
+    const userEmail = process.env.NEXT_PUBLIC_USER_EMAIL;
+    const userPassword = process.env.NEXT_PUBLIC_USER_PASSWORD;
+    const dbLink = process.env.NEXT_PUBLIC_DATABASE_URL;
+
+    let todosList = [];
+    try {
+        var idToken = "";
+        const auth = getAuth(app);
+        await signInWithEmailAndPassword(auth, process.env.NEXT_PUBLIC_USER_EMAIL, process.env.NEXT_PUBLIC_USER_PASSWORD).then(async (userCredential) => {
+            idToken = await getIdToken(auth.currentUser);
+        }).catch((error) => {
+            console.log(error);
+        });
+
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/mytodos.json?auth=${idToken}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        todosList = await response.json();
+        if (!response.ok || !todosList)
+            todosList = [];
+
+        return {
+            props: {
+                userEmail,
+                userPassword,
+                dbLink,
+                todosList: todosList,
+            },
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            props: {
+                userEmail,
+                userPassword,
+                dbLink,
+                todosList: [],
+            },
+        }
+    }
 }

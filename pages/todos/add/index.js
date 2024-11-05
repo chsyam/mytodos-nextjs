@@ -48,7 +48,7 @@ export default function AddTodo({ userEmail, userPassword, dbLink }) {
             var idToken = "";
             const auth = getAuth(app);
             await signInWithEmailAndPassword(auth, userEmail, userPassword).then(async (userCredential) => {
-                console.log("userCredential", userCredential);
+                // console.log("userCredential", userCredential);
                 idToken = await getIdToken(auth.currentUser);
             }).catch((error) => {
                 console.log("error =>", error);
