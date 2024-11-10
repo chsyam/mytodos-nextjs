@@ -9,6 +9,7 @@ import UpdateTodo from "@/Components/todos/UpdateTodo";
 import { getAuth, getIdToken, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "@/Components/FirebaseConfig";
 import { useRouter } from 'next/router';
+import { decrypt } from "../api/auth/lib";
 
 export default function Dashboard({ userEmail, userPassword, dbLink, todosList }) {
     const [todos, setTodos] = useState([]);
@@ -61,7 +62,6 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList }
     const handleComplete = (todoObjId, todo) => {
         setIsCompleting(!isCompleting);
         todo.status = "Completed";
-        // todo.dueDate = new Date();
         completeTodo(todoObjId, todo);
         setIsCompleting(!isCompleting);
     }
@@ -171,6 +171,22 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList }
 }
 
 export async function getServerSideProps(context) {
+    const { req, res } = context;
+    const token = req?.cookies['token']
+    const payload = await decrypt(token)
+    if (!payload || payload === null || payload === undefined) {
+        res.setHeader('Set-Cookie', [
+            'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;',
+        ]);
+
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false
+            }
+        }
+    }
+
     const userEmail = process.env.NEXT_PUBLIC_USER_EMAIL;
     const userPassword = process.env.NEXT_PUBLIC_USER_PASSWORD;
     const dbLink = process.env.NEXT_PUBLIC_DATABASE_URL;
@@ -202,6 +218,7 @@ export async function getServerSideProps(context) {
                 userPassword,
                 dbLink,
                 todosList: todosList,
+                payload: payload
             },
         }
     } catch (error) {
@@ -212,6 +229,7 @@ export async function getServerSideProps(context) {
                 userPassword,
                 dbLink,
                 todosList: [],
+                payload: payload
             },
         }
     }
