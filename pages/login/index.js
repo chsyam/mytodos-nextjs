@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styles from './../../styles/Auth.module.css';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import Navbar from '@/Components/Navbar';
 
 export default function Login() {
     const router = useRouter();

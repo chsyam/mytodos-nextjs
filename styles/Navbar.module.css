@@ -115,9 +115,14 @@
     width: 120px;
     background-color: #FFF;
     border-radius: 5px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border: 2px solid #00180f;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
     padding: 10px 0;
+}
+
+.profileOptionsList a {
+    cursor: pointer;
 }
 
 .profileOption {
@@ -131,4 +136,6 @@
 
 .profileOption:hover {
     color: rgb(21, 21, 21);
+    font-size: 20px;
+    font-weight: 600;
 }

@@ -91,7 +91,6 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList }
         }
     }
 
-    const handleNewTodo = () => { }
     const [isDeleting, setIsDeleting] = useState({
         status: false,
         id: null
@@ -99,8 +98,7 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList }
 
     return (
         <div className={styles.container}>
-            <Navbar />
-            <div className={styles.todoContainer} style={{ paddingTop: '80px', opacity: (isDeleting.status || addingNewTodo || isUpdating.status) ? '0.1' : '1', pointerEvents: (isDeleting.status || addingNewTodo || isUpdating.status) ? 'none' : 'auto' }}>
+            <div className={styles.todoContainer} style={{ paddingTop: '10px', opacity: (isDeleting.status || addingNewTodo || isUpdating.status) ? '0.1' : '1', pointerEvents: (isDeleting.status || addingNewTodo || isUpdating.status) ? 'none' : 'auto' }}>
                 <TodoStats todosList={todos} />
                 <div>
                     <div className={styles.todoHeaders}>
