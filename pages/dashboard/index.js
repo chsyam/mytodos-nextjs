@@ -1,4 +1,3 @@
-import Navbar from "@/Components/Navbar";
 import TodoList from "@/Components/todos/TodoList";
 import TodoStats from "@/Components/TodoStats";
 import { useEffect, useState } from "react";

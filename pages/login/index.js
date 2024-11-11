@@ -3,15 +3,14 @@ import Link from 'next/link';
 import styles from './../../styles/Auth.module.css';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import Navbar from '@/Components/Navbar';
 
 export default function Login() {
     const router = useRouter();
     const [loginError, setLoginError] = useState("");
     const [loginSuccess, setLoginSuccess] = useState("");
     const [formData, setFormData] = useState({
-        email: "syamkumar6845@gmail.com",
-        password: "Syam@190543"
+        email: "",
+        password: ""
     })
 
     const handleChange = (e) => {
@@ -23,7 +22,6 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
         try {
             const response = await fetch('/api/auth/login', {
                 method: 'POST',

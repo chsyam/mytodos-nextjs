@@ -7,12 +7,11 @@ import { useEffect, useState } from 'react';
 export default function Navbar({ isAuthenticated }) {
     const [isOpen, setIsOpen] = useState(false);
     const user = { name: "John Doe", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&q=80" };
+
     const [isLoggedIn, setIsLoggedIn] = useState({
         status: false,
         user: null
     });
-
-    console.log("isAuthenticated", isAuthenticated);
 
     const logoutHandler = () => {
         document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";

@@ -7,7 +7,7 @@ import { app } from "@/Components/FirebaseConfig";
 const userEmail = process.env.NEXT_PUBLIC_USER_EMAIL;
 const userPassword = process.env.NEXT_PUBLIC_USER_PASSWORD;
 const dbLink = process.env.NEXT_PUBLIC_DATABASE_URL;
-const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET;
 
 export default async function loginHandler(req, res) {
     const { email, password } = { email: req.body['email'], password: req.body['password'] };
