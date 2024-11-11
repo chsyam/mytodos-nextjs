@@ -12,6 +12,7 @@ export default function Login() {
         email: "",
         password: ""
     })
+    const [isLogging, setIsLogging] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -21,6 +22,7 @@ export default function Login() {
     }
 
     const handleSubmit = async (e) => {
+        setIsLogging(true);
         e.preventDefault();
         try {
             const response = await fetch('/api/auth/login', {
@@ -38,17 +40,17 @@ export default function Login() {
             else if (response.status === 200) {
                 setLoginError("");
                 setLoginSuccess("Login successfull");
-                const { token } = await response.json()
-                document.cookie = `token=${token}; path=/`
-                setTimeout(() => {
-                    router.push('/dashboard')
-                }, 500);
+                const { token } = await response.json();
+                document.cookie = `token=${token}; path=/`;
+                router.push('/dashboard');
             } else {
                 setLoginError("Something went wrong while login. Please try again later");
+                setIsLogging(false);
             }
         } catch (error) {
             setLoginError("Something went wrong while login. Please try again later");
             console.log(error);
+            setIsLogging(false);
         }
     }
 
@@ -68,7 +70,6 @@ export default function Login() {
                             onChange={(e) => handleChange(e)}
                             name='email' type="email" placeholder="Enter your email" />
                     </div>
-
                     <div className={styles.formGroup}>
                         <label>Password</label>
                         <input
@@ -76,7 +77,13 @@ export default function Login() {
                             onChange={(e) => handleChange(e)}
                             name='password' type="password" placeholder="Enter your password" />
                     </div>
-                    <button type="submit" className={styles.submitButton}>
+                    <button type="submit" className={styles.submitButton}
+                        style={{
+                            opacity: isLogging ? 0.5 : 1,
+                            pointerEvents: isLogging ? 'none' : 'auto',
+                            cursor: isLogging ? 'not-allowed' : 'pointer'
+                        }}
+                    >
                         SignIn
                     </button>
                 </form>
