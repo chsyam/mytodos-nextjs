@@ -2,9 +2,6 @@ import DatePicker from "react-datepicker";
 import styles from "./../../styles/CreateTodo.module.css"
 import { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { v4 as uuidv4 } from 'uuid';
-import { getAuth, getIdToken, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "@/Components/FirebaseConfig";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from "@/Components/Spinner";
@@ -25,7 +22,7 @@ export default function UpdateTodo({ setIsUpdating, todoItem }) {
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         isLoading &&
-            toast.info('Adding task to your list')
+            toast.success('Updated the task')
     }, [isLoading])
 
     const handleChange = (name, value) => {
@@ -40,7 +37,7 @@ export default function UpdateTodo({ setIsUpdating, todoItem }) {
         e.preventDefault();
         todoData['createdAt'] = new Date();
         todoData['status'] = todoData['dueDate'] < new Date() ? 'Overdue' : 'Pending';
-        console.log(todoData);
+        // console.log(todoData);
         try {
             const response = await fetch(`/api/todos/updateTodo?todoObjId=${todoItem.todoObjId}`, {
                 method: 'PATCH',
@@ -49,10 +46,8 @@ export default function UpdateTodo({ setIsUpdating, todoItem }) {
                 },
                 body: JSON.stringify(todoData)
             });
-            console.log("response", response)
             if (response.ok) {
                 const result = await response.json();
-                console.log(result.message);
                 router.reload();
             } else {
                 console.error('Failed to delete the item.');
@@ -127,7 +122,7 @@ export default function UpdateTodo({ setIsUpdating, todoItem }) {
                 </div>
             </form>
             <ToastContainer
-                position="top-right"
+                position="bottom-center"
                 autoClose={3000}
                 hideProgressBar={false}
                 newestOnTop={false}
@@ -135,7 +130,7 @@ export default function UpdateTodo({ setIsUpdating, todoItem }) {
                 rtl={false}
                 pauseOnFocusLoss
                 draggable
-                theme="light"
+                theme="dark"
             />
         </div>
     );

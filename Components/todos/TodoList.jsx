@@ -12,19 +12,26 @@ export default function TodoList({ todos, onComplete, setIsDeleting, isUpdating,
                                 <button
                                     onClick={() => onComplete(todo.todoObjId, todo)}
                                     className={styles.actionButton}
-                                    style={{ backgroundColor: todo.status === "Completed" ? 'green' : 'white', color: todo.status === "Completed" ? 'white' : 'black' }}
+                                    style={{
+                                        backgroundColor: todo.status === "Completed" ? 'green' : 'white',
+                                        color: todo.status === "Completed" ? 'white' : 'black'
+                                    }}
                                 >
                                     <Check />
                                 </button>
                             </td>
                             <td className={styles.todoContent}>
                                 <div className={styles.todoTitle}
-                                    style={{ textDecoration: todo.status === "Completed" ? 'line-through' : 'none' }}
+                                    style={{
+                                        textDecoration: todo.status === "Completed" ? 'line-through' : 'none'
+                                    }}
                                 >
                                     {todo.title}
                                 </div>
                                 <div className={styles.todoDescription}
-                                    style={{ textDecoration: todo.status === "Completed" ? 'line-through' : 'none' }}
+                                    style={{
+                                        textDecoration: todo.status === "Completed" ? 'line-through' : 'none'
+                                    }}
                                 >
                                     {todo.description}
                                 </div>

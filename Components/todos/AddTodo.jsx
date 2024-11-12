@@ -11,24 +11,22 @@ import Spinner from "@/Components/Spinner";
 import { useRouter } from "next/router";
 
 
-export default function AddTodo({ userEmail, userPassword, dbLink, setAddingNewTodo, addingNewTodo }) {
+export default function AddTodo({ userEmail, userPassword, dbLink, setAddingNewTodo, addingNewTodo, userData }) {
     const router = useRouter();
-
     const [todoData, setTodoData] = useState({
-        userId: '1',
+        userId: userData?.userId,
         todoId: uuidv4(),
         title: '',
         description: '',
         dueDate: new Date(),
         createdAt: new Date(),
-        status: 'pending'
+        status: ''
     });
-
 
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         isLoading &&
-            toast.info('Adding task to your list')
+            toast.success('Adding task to your list')
     }, [isLoading])
 
     const handleChange = (name, value) => {
@@ -43,7 +41,7 @@ export default function AddTodo({ userEmail, userPassword, dbLink, setAddingNewT
         e.preventDefault();
         todoData['createdAt'] = new Date();
         todoData['status'] = todoData['dueDate'] < new Date() ? 'Overdue' : 'Pending';
-        console.log(todoData);
+        // console.log(todoData);
         try {
             var idToken = "";
             const auth = getAuth(app);
@@ -62,7 +60,7 @@ export default function AddTodo({ userEmail, userPassword, dbLink, setAddingNewT
                 },
                 body: JSON.stringify(todoData),
             });
-            console.log("response", response);
+            // console.log("response", response);
 
             if (response.ok) {
                 router.reload();
@@ -120,13 +118,13 @@ export default function AddTodo({ userEmail, userPassword, dbLink, setAddingNewT
                     <button
                         onClick={() => {
                             setTodoData({
-                                userId: '1',
+                                userId: userData?.userId,
                                 todoId: uuidv4(),
                                 title: '',
                                 description: '',
                                 dueDate: new Date(),
                                 createdAt: new Date(),
-                                status: 'Pending'
+                                status: ''
                             })
                             setAddingNewTodo(!addingNewTodo);
                         }}
@@ -143,7 +141,7 @@ export default function AddTodo({ userEmail, userPassword, dbLink, setAddingNewT
                 </div>
             </form>
             <ToastContainer
-                position="top-right"
+                position="bottom-center"
                 autoClose={3000}
                 hideProgressBar={false}
                 newestOnTop={false}
@@ -151,7 +149,7 @@ export default function AddTodo({ userEmail, userPassword, dbLink, setAddingNewT
                 rtl={false}
                 pauseOnFocusLoss
                 draggable
-                theme="light"
+                theme="dark"
             />
         </div>
     );

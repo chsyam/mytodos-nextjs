@@ -9,10 +9,29 @@ import { getAuth, getIdToken, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "@/Components/FirebaseConfig";
 import { useRouter } from 'next/router';
 import { decrypt } from "../api/auth/lib";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export default function Dashboard({ userEmail, userPassword, dbLink, todosList }) {
+export default function Dashboard({ userEmail, userPassword, dbLink, todosList, payload }) {
     const [todos, setTodos] = useState([]);
     const router = useRouter();
+    const [userData, setUserData] = useState({
+        username: '',
+        userId: '',
+        email: ''
+    })
+
+    useEffect(() => {
+        try {
+            setUserData({
+                username: payload.username,
+                userId: payload.userId,
+                email: payload.email
+            })
+        } catch (error) {
+            router.push("/login");
+        }
+    }, [payload])
 
     useEffect(() => {
         let tempKeys = Object.keys(todosList);
@@ -22,7 +41,6 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList }
             tempValues[i]['todoObjId'] = tempKeys[i];
             tempTodos.push(tempValues[i])
         }
-        console.log("tempTodos", tempTodos)
         setTodos(tempTodos);
     }, [todosList])
 
@@ -48,6 +66,7 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList }
             console.log("response", response)
             if (response.ok) {
                 const result = await response.json();
+                toast.success('Wohoo! You have completed the task');
                 console.log(result.message);
                 router.reload();
             } else {
@@ -76,6 +95,7 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList }
             console.log("response", response)
             if (response.ok) {
                 const result = await response.json();
+                toast.success("You have deleted the task!");
                 console.log(result.message);
                 setIsDeleting({
                     status: false,
@@ -112,7 +132,6 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList }
                             </button>
                         </div>
                     </div>
-
                     <TodoList
                         todos={todos}
                         onComplete={handleComplete}
@@ -152,7 +171,7 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList }
             {
                 addingNewTodo && (
                     <div className={styles.AddConfirmation}>
-                        <AddTodo userEmail={userEmail} userPassword={userPassword} dbLink={dbLink} setAddingNewTodo={setAddingNewTodo} addingNewTodo={addingNewTodo} />
+                        <AddTodo userEmail={userEmail} userPassword={userPassword} dbLink={dbLink} setAddingNewTodo={setAddingNewTodo} addingNewTodo={addingNewTodo} userData={userData} />
                     </div>
                 )
             }
@@ -163,6 +182,17 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList }
                     </div>
                 )
             }
+            <ToastContainer
+                position="bottom-center"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                theme="dark"
+            />
         </div>
     );
 }
@@ -183,6 +213,8 @@ export async function getServerSideProps(context) {
             }
         }
     }
+
+    console.log("payload", payload)
 
     const userEmail = process.env.NEXT_PUBLIC_USER_EMAIL;
     const userPassword = process.env.NEXT_PUBLIC_USER_PASSWORD;

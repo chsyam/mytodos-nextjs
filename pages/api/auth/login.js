@@ -48,7 +48,7 @@ export default async function loginHandler(req, res) {
                 }, jwtSecret, {
                     expiresIn: '1440m',
                 })
-                console.log(token)
+                // console.log(token)
                 return res.status(200).json({ token: token, message: 'Login successful' });
             } else {
                 console.log("Invalid Credentials...!");
