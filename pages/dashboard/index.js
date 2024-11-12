@@ -214,13 +214,10 @@ export async function getServerSideProps(context) {
         }
     }
 
-    console.log("payload", payload)
-
     const userEmail = process.env.NEXT_PUBLIC_USER_EMAIL;
     const userPassword = process.env.NEXT_PUBLIC_USER_PASSWORD;
     const dbLink = process.env.NEXT_PUBLIC_DATABASE_URL;
 
-    let todosList = [];
     try {
         var idToken = "";
         const auth = getAuth(app);
@@ -237,7 +234,20 @@ export async function getServerSideProps(context) {
                 'Content-Type': 'application/json',
             }
         });
-        todosList = await response.json();
+
+        let tempList = await response.json();
+        let temp = [];
+        if (tempList) {
+            temp = Object.keys(tempList).filter((todoKey) => {
+                return tempList[todoKey]["userId"] === payload?.userId
+            });
+        }
+
+        let todosList = {};
+        temp.forEach((todoKey) => {
+            todosList[todoKey] = tempList[todoKey]
+        })
+
         if (!response.ok || !todosList)
             todosList = [];
 
