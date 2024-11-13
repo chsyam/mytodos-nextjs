@@ -1,8 +1,9 @@
+"use client";
 import TodoList from "@/Components/todos/TodoList";
 import TodoStats from "@/Components/TodoStats";
 import { useEffect, useState } from "react";
 import styles from "./../../styles/todos/TodoList.module.css"
-import { Filter, Plus, Trash2, X } from "lucide-react";
+import { Plus, Trash2, X } from "lucide-react";
 import AddTodo from "@/Components/todos/AddTodo";
 import UpdateTodo from "@/Components/todos/UpdateTodo";
 import { getAuth, getIdToken, signInWithEmailAndPassword } from "firebase/auth";
@@ -11,6 +12,7 @@ import { useRouter } from 'next/router';
 import { decrypt } from "../api/auth/lib";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Select from 'react-select';
 
 export default function Dashboard({ userEmail, userPassword, dbLink, todosList, payload }) {
     const [todos, setTodos] = useState([]);
@@ -20,6 +22,14 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList, 
         userId: '',
         email: ''
     })
+
+    const [selectedFilter, setSelectedFilter] = useState('NA');
+    const options = [
+        { value: 'NA', label: 'All Todos' },
+        { value: 'overdue', label: 'Overdue' },
+        { value: 'pending', label: 'Pending' },
+        { value: 'completed', label: 'Completed' }
+    ]
 
     useEffect(() => {
         try {
@@ -49,6 +59,7 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList, 
         status: false,
         todoObjId: null
     });
+
     const [isUpdating, setIsUpdating] = useState({
         status: false,
         todoItem: null
@@ -115,6 +126,11 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList, 
         id: null
     });
 
+    const handleChange = (option) => {
+        console.log(option)
+        setSelectedFilter(option.value)
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.todoContainer} style={{ paddingTop: '10px', opacity: (isDeleting.status || addingNewTodo || isUpdating.status) ? '0.1' : '1', pointerEvents: (isDeleting.status || addingNewTodo || isUpdating.status) ? 'none' : 'auto' }}>
@@ -123,7 +139,11 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList, 
                     <div className={styles.todoHeaders}>
                         <div className={styles.title}>Todos List</div>
                         <div className={styles.menuOptions}>
-                            <Filter />
+                            <Select
+                                placeholder={"Filter Todos"}
+                                options={options}
+                                onChange={handleChange}
+                            />
                             <button
                                 onClick={() => setAddingNewTodo(!addingNewTodo)}
                                 className={styles.newTodo}>
@@ -141,6 +161,7 @@ export default function Dashboard({ userEmail, userPassword, dbLink, todosList, 
                         setIsUpdating={setIsUpdating}
                         isCompleting={isCompleting}
                         setIsCompleting={setIsCompleting}
+                        selectedFilter={selectedFilter}
                     />
                 </div>
             </div>

@@ -2,6 +2,7 @@
     background: linear-gradient(135deg, #f5f7ff 0%, #f8f0ff 50%, #fff0f5 100%);
     padding: 30px;
     font-family: 'Poppins';
+    user-select: none;
 }
 
 .todoContainer {
@@ -30,7 +31,6 @@
     background-color: #FFF;
     border: 2px solid #016f7e;
     font-family: 'Poppins';
-    user-select: none;
 }
 
 .checkBox {
@@ -46,8 +46,13 @@
 }
 
 .checkBox button:hover {
-    border: 2px solid green;
+    border: 3px solid green;
     color: green;
+    box-shadow: 1px 1px 24px green;
+}
+
+.checkBox button:hover {
+    border: 2px solid green;
 }
 
 .todoActions {
@@ -80,19 +85,19 @@
 }
 
 .todoContent {
-    padding: 20px 20px;
+    padding: 15px 20px;
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
 .todoTitle {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 500;
 }
 
 .todoDescription {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #424242;
 }
 
@@ -143,7 +148,6 @@
     box-shadow: 3px 4px 6px rgba(7, 7, 7, 0.5);
     border: 2px solid red;
     padding: 20px;
-    user-select: none;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -166,7 +170,6 @@
     box-shadow: 3px 4px 6px rgba(7, 7, 7, 0.5);
     border: 2px solid green;
     padding: 20px;
-    user-select: none;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -212,4 +215,9 @@
     background-color: green;
     box-shadow: 3px 4px 6px green;
     transition: all ease-in 0.2s;
+}
+
+.filterButton select {
+    padding: 10px;
+    border-radius: 5px;
 }

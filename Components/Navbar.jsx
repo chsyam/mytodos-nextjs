@@ -59,11 +59,6 @@ export default function Navbar({ isAuthenticated }) {
                                 <button
                                     onClick={() => setIsOpen(!isOpen)}
                                     className={styles.profileButton}>
-                                    <img
-                                        src={user.avatar}
-                                        alt={user.name}
-                                        className={styles.avatar}
-                                    />
                                     <span>{isLoggedIn.user}</span>
                                     <ChevronDown
                                         style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
